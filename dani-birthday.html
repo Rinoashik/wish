@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Dani</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Parisienne&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0906;
+    --bg-2:#151007;
+    --gold:#c9a24d;
+    --gold-light:#f2d998;
+    --gold-dim:#8a6a2c;
+    --wine:#3d0f1a;
+    --cream:#f4ecd8;
+    --ink:#e9dfc6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Cormorant Garamond', serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold-dim);color:var(--cream);}
+
+  .eyebrow{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.35em;
+    font-size:0.7rem;
+    color:var(--gold);
+    text-transform:uppercase;
+  }
+
+  /* ---------- curtain intro ---------- */
+  #curtain{
+    position:fixed;inset:0;background:var(--bg);z-index:999;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity 1.4s ease, visibility 1.4s ease;
+  }
+  #curtain span{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.4em;
+    font-size:0.75rem;
+    color:var(--gold-dim);
+    opacity:0;
+    animation:curtainText 2.6s ease forwards;
+  }
+  @keyframes curtainText{
+    0%{opacity:0; letter-spacing:0.8em;}
+    40%{opacity:1; letter-spacing:0.4em;}
+    100%{opacity:0.4;}
+  }
+  #curtain.hide{opacity:0;visibility:hidden;}
+
+  canvas#particles{
+    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.55;
+  }
+
+  section{
+    position:relative;z-index:2;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:6vh 6vw;
+  }
+
+  /* ---------- hero ---------- */
+  #hero{gap:1.6rem;}
+  .hero-name{
+    font-size:clamp(3rem,10vw,7.5rem);
+    font-weight:500;
+    line-height:1;
+    letter-spacing:0.02em;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .hero-name span{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(0.5em);
+    background:linear-gradient(120deg,var(--gold-dim) 20%, var(--gold-light) 45%, var(--gold) 60%, var(--gold-dim) 80%);
+    background-size:250% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:letterIn 1s ease forwards, shimmer 5s linear infinite 2.4s;
+  }
+  @keyframes letterIn{
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes shimmer{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+  .hero-sub{
+    font-family:'Cinzel', serif;
+    font-size:0.85rem;
+    letter-spacing:0.4em;
+    color:var(--ink);
+    opacity:0.75;
+    text-transform:uppercase;
+    opacity:0;
+    animation:fadeUp 1.4s ease forwards 1.6s;
+  }
+  .rule{
+    width:1px;height:60px;
+    background:linear-gradient(var(--gold), transparent);
+    opacity:0;
+    animation:fadeUp 1.4s ease forwards 2s;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:0.75; transform:translateY(0);}
+  }
+  .scroll-cue{
+    position:absolute;bottom:6vh;left:50%;transform:translateX(-50%);
+    font-family:'Cinzel';font-size:0.6rem;letter-spacing:0.3em;
+    color:var(--gold-dim); opacity:0; animation:fadeUp 1.4s ease forwards 2.6s;
+  }
+
+  /* generic reveal-on-scroll */
+  .reveal{opacity:0; transform:translateY(30px); transition:opacity 1.1s ease, transform 1.1s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- seal section ---------- */
+  #seal-section{gap:1.6rem;}
+  .seal-instruction{opacity:0.7;font-size:0.95rem;}
+  .seal-stage{
+    position:relative;width:220px;height:220px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    user-select:none;
+  }
+  .seal{
+    width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 45%, var(--gold-dim) 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 6px rgba(201,162,77,0.08), 0 20px 40px rgba(0,0,0,0.55);
+    transition:transform 0.5s cubic-bezier(.4,0,.2,1);
+    position:relative;
+    z-index:2;
+  }
+  .seal-stage.stamped .seal{
+    transform:scale(0.72) rotate(-8deg) translateY(6px);
+    filter:brightness(0.85);
+  }
+  .seal-letter{
+    font-family:'Cinzel', serif;
+    font-size:3rem;
+    color:var(--bg);
+  }
+  canvas#confetti{
+    position:fixed;inset:0;pointer-events:none;z-index:50;
+  }
+
+  /* ---------- verse modal ---------- */
+  .verse-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(6,4,2,0.88);
+    display:flex;align-items:center;justify-content:center;
+    padding:6vh 6vw;
+    opacity:0;visibility:hidden;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .verse-overlay.show{opacity:1;visibility:visible;}
+  .verse-card{
+    max-width:560px;
+    text-align:center;
+    transform:scale(0.85);
+    transition:transform 0.7s cubic-bezier(.34,1.56,.64,1);
+  }
+  .verse-overlay.show .verse-card{transform:scale(1);}
+  .verse-cross{
+    font-size:2.4rem;
+    color:var(--gold-light);
+    margin-bottom:1.4rem;
+    opacity:0.9;
+    text-shadow:0 0 24px rgba(242,217,152,0.5);
+  }
+  .verse-text{
+    font-family:'Cormorant Garamond';
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.4rem,3.4vw,2rem);
+    line-height:1.6;
+    color:var(--cream);
+  }
+  .cross-inline, .heart-inline{font-style:normal; margin:0 0.05em;}
+  .verse-ref{
+    margin-top:1.4rem;
+    font-family:'Cinzel';
+    font-size:0.75rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .verse-close{
+    margin-top:2.6rem;
+    font-family:'Cinzel';
+    font-size:0.6rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+    cursor:pointer;
+    display:inline-block;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  .verse-close:hover{color:var(--gold-light); border-color:var(--gold-dim);}
+
+  /* ---------- message section ---------- */
+  #message-section{gap:1.4rem;}
+  .frame{
+    position:relative;
+    max-width:640px;
+    padding:4.5rem 3rem;
+  }
+  .corner{position:absolute;width:46px;height:46px;opacity:0.85;}
+  .corner.tl{top:0;left:0;}
+  .corner.tr{top:0;right:0;transform:scaleX(-1);}
+  .corner.bl{bottom:0;left:0;transform:scaleY(-1);}
+  .corner.br{bottom:0;right:0;transform:scale(-1,-1);}
+  .note{
+    font-family:'Parisienne', cursive;
+    font-size:clamp(1.6rem,3.4vw,2.3rem);
+    line-height:1.75;
+    color:var(--cream);
+  }
+  .note strong{color:var(--gold-light);font-weight:400;}
+  .signoff{
+    margin-top:1.8rem;
+    font-family:'Cormorant Garamond';
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--gold);
+  }
+
+  /* ---------- footer ---------- */
+  #footer-section{min-height:60vh; gap:1.2rem;}
+  .footer-mark{
+    width:44px;height:44px;opacity:0.8;
+  }
+  .footer-title{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    font-weight:500;
+    color:var(--gold-light);
+  }
+  .footer-sub{
+    font-family:'Cinzel';font-size:0.65rem;letter-spacing:0.35em;
+    color:var(--gold-dim); text-transform:uppercase;
+  }
+
+  .section-title{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    font-weight:500;
+    color:var(--gold-light);
+    margin-bottom:1rem;
+  }
+
+  /* ---------- reasons grid ---------- */
+  #reasons-section{gap:1.4rem;}
+  .reasons-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.6rem;
+    max-width:820px;
+    width:100%;
+    margin-top:1rem;
+    perspective:1200px;
+  }
+  .rcard{height:170px;}
+  .rcard-inner{
+    position:relative;width:100%;height:100%;
+    transform-style:preserve-3d;
+    transition:transform 0.7s cubic-bezier(.4,0,.2,1);
+  }
+  .rcard:hover .rcard-inner, .rcard.flipped .rcard-inner{transform:rotateY(180deg);}
+  .rcard-face{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    backface-visibility:hidden;
+    border:1px solid var(--gold-dim);
+    border-radius:4px;
+    padding:1.2rem;
+  }
+  .rcard-front{
+    background:linear-gradient(160deg, var(--bg-2), var(--bg));
+    font-family:'Cinzel';
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    font-size:0.95rem;
+    color:var(--gold-light);
+  }
+  .rcard-back{
+    background:linear-gradient(160deg, #1a140b, var(--bg-2));
+    transform:rotateY(180deg);
+  }
+  .rcard-back p{
+    font-size:1.05rem;
+    line-height:1.5;
+    color:var(--ink);
+  }
+  .reasons-hint{
+    font-size:0.8rem;
+    letter-spacing:0.1em;
+    color:var(--gold-dim);
+    margin-top:0.4rem;
+  }
+  @media (max-width:720px){
+    .reasons-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:460px){
+    .reasons-grid{grid-template-columns:1fr;}
+    .rcard{height:130px;}
+  }
+
+  /* ---------- verse carousel ---------- */
+  #verses-section{gap:1.2rem;}
+  .verse-carousel{max-width:600px; min-height:120px; display:flex; flex-direction:column; justify-content:center;}
+  .carousel-text{
+    font-family:'Cormorant Garamond';
+    font-style:italic;
+    font-size:clamp(1.3rem,3vw,1.8rem);
+    line-height:1.6;
+    color:var(--cream);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .carousel-ref{
+    margin-top:1rem;
+    font-family:'Cinzel';
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold);
+    transition:opacity 0.6s ease;
+  }
+  .carousel-text.fade, .carousel-ref.fade{opacity:0; transform:translateY(8px);}
+  .carousel-dots{display:flex;gap:0.5rem;margin-top:0.6rem;}
+  .carousel-dots span{
+    width:6px;height:6px;border-radius:50%;background:var(--gold-dim);opacity:0.5;
+    transition:opacity 0.4s ease, background 0.4s ease;
+  }
+  .carousel-dots span.active{opacity:1; background:var(--gold-light);}
+
+  /* ---------- wish / star ---------- */
+  #wish-section{gap:1.2rem;}
+  .wish-instruction{opacity:0.75; font-size:0.95rem; max-width:380px;}
+  .star-stage{cursor:pointer; padding:1rem;}
+  .wish-star{
+    width:64px;height:64px;
+    filter:drop-shadow(0 0 10px rgba(201,162,77,0.5));
+    animation:twinkle 2.4s ease-in-out infinite;
+    transition:transform 0.4s ease;
+  }
+  .star-stage:active .wish-star{transform:scale(0.85);}
+  @keyframes twinkle{
+    0%,100%{opacity:0.75; transform:scale(1);}
+    50%{opacity:1; transform:scale(1.08);}
+  }
+  .wish-reveal{
+    max-width:420px;
+    font-size:1.05rem;
+    color:var(--gold-light);
+    opacity:0; transform:translateY(10px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .wish-reveal.show{opacity:1; transform:translateY(0);}
+
+  /* ---------- blessing ---------- */
+  #blessing-section{gap:1rem; min-height:70vh;}
+  .blessing-cross{font-size:1.8rem; color:var(--gold-light); opacity:0.9;}
+  .blessing-text{
+    font-family:'Cinzel'; font-size:0.7rem; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--gold-dim);
+  }
+  .blessing-body{
+    max-width:480px;
+    font-size:1.3rem;
+    line-height:1.7;
+    color:var(--cream);
+  }
+  .blessing-ref{
+    font-family:'Cinzel'; font-size:0.65rem; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--gold);
+  }
+
+  @media (max-width:640px){
+    .frame{padding:3.2rem 1.4rem;}
+  }
+</style>
+</head>
+<body>
+
+<div id="curtain"><span>UNWRAPPING SOMETHING SPECIAL</span></div>
+<canvas id="particles"></canvas>
+<canvas id="confetti"></canvas>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="eyebrow">A celebration of</div>
+  <div class="hero-name" id="heroName"></div>
+  <div class="hero-sub" id="heroSub">Fearfully &amp; wonderfully made</div>
+  <div class="rule"></div>
+  <div class="scroll-cue">scroll &darr;</div>
+</section>
+
+<!-- REASONS -->
+<section id="reasons-section">
+  <div class="eyebrow reveal">A few things about you</div>
+  <h2 class="section-title reveal">Just some of the reasons</h2>
+  <div class="reasons-grid reveal">
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Grace</span></div>
+      <div class="rcard-face rcard-back"><p>The way you carry yourself lights up every room you walk into.</p></div>
+    </div></div>
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Strength</span></div>
+      <div class="rcard-face rcard-back"><p>Quiet and steady &mdash; you make hard days feel possible.</p></div>
+    </div></div>
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Joy</span></div>
+      <div class="rcard-face rcard-back"><p>Your laugh is contagious. It's pure sunshine.</p></div>
+    </div></div>
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Faith</span></div>
+      <div class="rcard-face rcard-back"><p>Your trust in God is a quiet, unshakable kind of courage.</p></div>
+    </div></div>
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Kindness</span></div>
+      <div class="rcard-face rcard-back"><p>You notice people. You make them feel truly seen.</p></div>
+    </div></div>
+    <div class="rcard"><div class="rcard-inner">
+      <div class="rcard-face rcard-front"><span>Beauty</span></div>
+      <div class="rcard-face rcard-back"><p>Inside and out, you shine without even trying.</p></div>
+    </div></div>
+  </div>
+  <p class="reasons-hint reveal">tap or hover each card</p>
+</section>
+
+<!-- SCRIPTURE CAROUSEL -->
+<section id="verses-section">
+  <div class="eyebrow reveal">Words spoken over you</div>
+  <div class="verse-carousel reveal">
+    <p class="carousel-text" id="carouselText">&#8220;She is clothed with strength and dignity, and she laughs without fear of the future.&#8221;</p>
+    <p class="carousel-ref" id="carouselRef">Proverbs 31:25</p>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
+
+<!-- WISH / STAR -->
+<section id="wish-section">
+  <div class="eyebrow reveal">Before we go on</div>
+  <p class="wish-instruction reveal">close your eyes &mdash; make a wish &mdash; then tap the star</p>
+  <div class="star-stage reveal" id="starStage">
+    <svg viewBox="0 0 60 60" class="wish-star" id="wishStar"><path d="M30 4 L36 24 L57 24 L40 37 L46 57 L30 45 L14 57 L20 37 L3 24 L24 24 Z" fill="#c9a24d"/></svg>
+  </div>
+  <p class="wish-reveal" id="wishReveal">Whatever you wished for &mdash; may it be even better than you imagined. &#128171;</p>
+</section>
+
+<!-- SEAL -->
+<section id="seal-section">
+  <div class="eyebrow reveal">A little something</div>
+  <p class="seal-instruction reveal">tap the seal to open it</p>
+  <div class="seal-stage reveal" id="sealStage">
+    <div class="seal"><span class="seal-letter">D</span></div>
+  </div>
+</section>
+
+<!-- VERSE MODAL -->
+<div class="verse-overlay" id="verseOverlay">
+  <div class="verse-card">
+    <div class="verse-cross">&#10013;</div>
+    <p class="verse-text">&#8220;I can do all things through Christ<span class="cross-inline">&#10013;</span> who strengthens me<span class="heart-inline">&#128150;</span>&#8221;</p>
+    <p class="verse-ref">Philippians 4:13</p>
+    <div class="verse-close" id="verseClose">close</div>
+  </div>
+</div>
+
+<!-- MESSAGE -->
+<section id="message-section">
+  <div class="frame reveal">
+    <svg class="corner tl" viewBox="0 0 60 60"><path d="M2 58 V14 Q2 2 14 2 H58" fill="none" stroke="#c9a24d" stroke-width="1.4"/><circle cx="14" cy="2" r="2" fill="#c9a24d"/></svg>
+    <svg class="corner tr" viewBox="0 0 60 60"><path d="M2 58 V14 Q2 2 14 2 H58" fill="none" stroke="#c9a24d" stroke-width="1.4"/><circle cx="14" cy="2" r="2" fill="#c9a24d"/></svg>
+    <svg class="corner bl" viewBox="0 0 60 60"><path d="M2 58 V14 Q2 2 14 2 H58" fill="none" stroke="#c9a24d" stroke-width="1.4"/><circle cx="14" cy="2" r="2" fill="#c9a24d"/></svg>
+    <svg class="corner br" viewBox="0 0 60 60"><path d="M2 58 V14 Q2 2 14 2 H58" fill="none" stroke="#c9a24d" stroke-width="1.4"/><circle cx="14" cy="2" r="2" fill="#c9a24d"/></svg>
+    <p class="note">Dear <strong>Dani</strong>, on your day &mdash; here's to a year that treats you as beautifully as you treat everyone around you.</p>
+    <p class="note">May it be full of laughter, soft mornings, answered prayers, and every little thing you've been hoping for.</p>
+    <p class="note">You are so deeply loved &mdash; by the people around you, and even more by the One who made you.</p>
+    <p class="signoff">With so much love, always.</p>
+  </div>
+</section>
+
+<!-- BLESSING -->
+<section id="blessing-section">
+  <div class="blessing-cross reveal">&#10013;</div>
+  <p class="blessing-text reveal">A little prayer for you</p>
+  <p class="blessing-body reveal">May the Lord bless you and keep you, Dani. May His face shine upon you and give you peace &mdash; in this new year, and always.</p>
+  <p class="blessing-ref reveal">Numbers 6:24&ndash;26</p>
+</section>
+
+<!-- FOOTER -->
+<section id="footer-section">
+  <svg class="footer-mark reveal" viewBox="0 0 44 44"><circle cx="22" cy="22" r="20" fill="none" stroke="#c9a24d" stroke-width="1"/><path d="M22 8 L22 36 M8 22 L36 22" stroke="#c9a24d" stroke-width="0.6" opacity="0.5"/></svg>
+  <div class="footer-title reveal">Happy Birthday, Dani</div>
+  <div class="footer-sub reveal">Grateful for you, always</div>
+</section>
+
+<script>
+  // curtain
+  window.addEventListener('load', ()=>{
+    setTimeout(()=>{
+      document.getElementById('curtain').classList.add('hide');
+    }, 1400);
+  });
+
+  // hero letter reveal
+  const heroName = document.getElementById('heroName');
+  const text = "Dani Francis";
+  [...text].forEach((ch,i)=>{
+    const s = document.createElement('span');
+    s.textContent = ch === ' ' ? '\u00A0' : ch;
+    s.style.animationDelay = (0.3 + i*0.06) + 's, ' + (2.4) + 's';
+    heroName.appendChild(s);
+  });
+
+  // cycling hero subtitle
+  const heroSub = document.getElementById('heroSub');
+  const subPhrases = ["Fearfully &amp; wonderfully made","Held by grace","Chosen with purpose","Loved beyond measure"];
+  let subIdx = 0;
+  setInterval(()=>{
+    heroSub.style.opacity = 0;
+    setTimeout(()=>{
+      subIdx = (subIdx+1) % subPhrases.length;
+      heroSub.innerHTML = subPhrases[subIdx];
+      heroSub.style.opacity = 0.75;
+    }, 500);
+  }, 3400);
+
+  // flip cards (tap support for touch devices)
+  document.querySelectorAll('.rcard').forEach(card=>{
+    card.addEventListener('click', ()=>{ card.classList.toggle('flipped'); });
+  });
+
+  // scripture carousel
+  const verses = [
+    {text:"&#8220;She is clothed with strength and dignity, and she laughs without fear of the future.&#8221;", ref:"Proverbs 31:25"},
+    {text:"&#8220;The joy of the Lord is your strength.&#8221;", ref:"Nehemiah 8:10"},
+    {text:"&#8220;For I know the plans I have for you, declares the Lord, plans to prosper you and give you hope.&#8221;", ref:"Jeremiah 29:11"},
+    {text:"&#8220;Delight yourself in the Lord, and He will give you the desires of your heart.&#8221;", ref:"Psalm 37:4"}
+  ];
+  const carouselText = document.getElementById('carouselText');
+  const carouselRef = document.getElementById('carouselRef');
+  const dotsWrap = document.getElementById('carouselDots');
+  verses.forEach((_,i)=>{
+    const d = document.createElement('span');
+    if(i===0) d.classList.add('active');
+    dotsWrap.appendChild(d);
+  });
+  let vIdx = 0;
+  setInterval(()=>{
+    carouselText.classList.add('fade');
+    carouselRef.classList.add('fade');
+    setTimeout(()=>{
+      vIdx = (vIdx+1) % verses.length;
+      carouselText.innerHTML = verses[vIdx].text;
+      carouselRef.textContent = verses[vIdx].ref;
+      [...dotsWrap.children].forEach((d,i)=>d.classList.toggle('active', i===vIdx));
+      carouselText.classList.remove('fade');
+      carouselRef.classList.remove('fade');
+    }, 600);
+  }, 5000);
+
+  // wish star
+  const starStage = document.getElementById('starStage');
+  const wishReveal = document.getElementById('wishReveal');
+  let wished = false;
+  starStage.addEventListener('click', ()=>{
+    if(wished) return;
+    wished = true;
+    const rect = starStage.getBoundingClientRect();
+    burst(rect.left+rect.width/2, rect.top+rect.height/2);
+    wishReveal.classList.add('show');
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:0.2});
+  revealEls.forEach(el=>io.observe(el));
+
+  // ambient gold particles
+  const pc = document.getElementById('particles');
+  const pctx = pc.getContext('2d');
+  function resizeP(){ pc.width = innerWidth; pc.height = document.body.scrollHeight; }
+  resizeP();
+  window.addEventListener('resize', resizeP);
+
+  let particles = Array.from({length: 70}, ()=>({
+    x: Math.random()*pc.width,
+    y: Math.random()*pc.height,
+    r: Math.random()*1.6+0.3,
+    vy: Math.random()*0.15+0.03,
+    vx: (Math.random()-0.5)*0.08,
+    a: Math.random()*0.5+0.15
+  }));
+  function drawParticles(){
+    pctx.clearRect(0,0,pc.width,pc.height);
+    particles.forEach(p=>{
+      pctx.beginPath();
+      pctx.fillStyle = `rgba(201,162,77,${p.a})`;
+      pctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      pctx.fill();
+      p.y -= p.vy; p.x += p.vx;
+      if(p.y < -10){ p.y = pc.height+10; p.x = Math.random()*pc.width; }
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+  window.addEventListener('scroll', ()=>{ resizeP(); });
+
+  // wax seal interaction + confetti burst
+  const sealStage = document.getElementById('sealStage');
+  const cv = document.getElementById('confetti');
+  const cctx = cv.getContext('2d');
+  function resizeC(){ cv.width = innerWidth; cv.height = innerHeight; }
+  resizeC();
+  window.addEventListener('resize', resizeC);
+
+  let confettiPieces = [];
+  function burst(x,y){
+    for(let i=0;i<90;i++){
+      confettiPieces.push({
+        x, y,
+        vx:(Math.random()-0.5)*8,
+        vy: Math.random()*-8-2,
+        g: 0.22+Math.random()*0.08,
+        size: Math.random()*5+3,
+        rot: Math.random()*360,
+        vr: (Math.random()-0.5)*10,
+        color: Math.random()>0.5 ? '#c9a24d' : '#f2d998',
+        life: 100+Math.random()*40
+      });
+    }
+  }
+  function animateConfetti(){
+    cctx.clearRect(0,0,cv.width,cv.height);
+    confettiPieces.forEach(p=>{
+      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
+      cctx.save();
+      cctx.translate(p.x,p.y);
+      cctx.rotate(p.rot*Math.PI/180);
+      cctx.fillStyle = p.color;
+      cctx.globalAlpha = Math.max(p.life/140,0);
+      cctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.5);
+      cctx.restore();
+    });
+    confettiPieces = confettiPieces.filter(p=>p.life>0 && p.y < cv.height+50);
+    requestAnimationFrame(animateConfetti);
+  }
+  animateConfetti();
+
+  const verseOverlay = document.getElementById('verseOverlay');
+  const verseClose = document.getElementById('verseClose');
+
+  sealStage.addEventListener('click', ()=>{
+    sealStage.classList.add('stamped');
+    const rect = sealStage.getBoundingClientRect();
+    burst(rect.left+rect.width/2, rect.top+rect.height/2);
+    setTimeout(()=>{ verseOverlay.classList.add('show'); }, 400);
+  });
+
+  function closeVerse(){ verseOverlay.classList.remove('show'); sealStage.classList.remove('stamped'); }
+  verseClose.addEventListener('click', closeVerse);
+  verseOverlay.addEventListener('click', (e)=>{ if(e.target === verseOverlay) closeVerse(); });
+</script>
+</body>
+</html>
