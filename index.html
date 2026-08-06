@@ -246,9 +246,6 @@
 
   /* ---------- footer ---------- */
   #footer-section{min-height:60vh; gap:1.2rem;}
-  .footer-mark{
-    width:44px;height:44px;opacity:0.8;
-  }
   .footer-title{
     font-size:clamp(1.8rem,4vw,2.6rem);
     font-weight:500;
@@ -393,6 +390,118 @@
     text-transform:uppercase; color:var(--gold);
   }
 
+  /* ---------- scratch blessing ---------- */
+  #scratch-section{gap:1.2rem;}
+  .scratch-instruction{opacity:0.75; font-size:0.95rem;}
+  .scratch-wrap{
+    position:relative;
+    width:min(520px,88vw);
+    height:220px;
+    border-radius:6px;
+    overflow:hidden;
+    border:1px solid var(--gold-dim);
+  }
+  .scratch-under{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:2rem;text-align:center;
+    background:linear-gradient(160deg,#1a140b,var(--bg-2));
+  }
+  .scratch-under p{
+    font-family:'Cormorant Garamond'; font-style:italic;
+    font-size:1.25rem; line-height:1.65; color:var(--cream);
+  }
+  .scratch-under .scratch-ref{
+    margin-top:0.9rem; font-family:'Cinzel'; font-size:0.7rem;
+    letter-spacing:0.3em; color:var(--gold); text-transform:uppercase;
+  }
+  .scratch-canvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    cursor:pointer; touch-action:none;
+    transition:opacity 0.9s ease;
+  }
+  .scratch-wrap.revealed .scratch-canvas{opacity:0; pointer-events:none;}
+
+  /* ---------- destiny ---------- */
+  #destiny-section{gap:1.4rem;}
+  .destiny-instruction{opacity:0.75; font-size:0.95rem;}
+  .destiny-btn{
+    font-family:'Cinzel', serif;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-size:0.8rem;
+    color:var(--gold-light);
+    background:transparent;
+    border:1px solid var(--gold);
+    padding:1rem 2.6rem;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+  }
+  .destiny-btn:hover{
+    background:var(--gold);
+    color:var(--bg);
+    box-shadow:0 0 26px rgba(201,162,77,0.45);
+    transform:translateY(-2px);
+  }
+  .destiny-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(6,4,2,0.9);
+    display:flex;align-items:center;justify-content:center;
+    padding:6vh 6vw;
+    opacity:0;visibility:hidden;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .destiny-overlay.show{opacity:1;visibility:visible;}
+  .destiny-card{
+    max-width:560px;
+    text-align:center;
+    transform:scale(0.85);
+    transition:transform 0.7s cubic-bezier(.34,1.56,.64,1);
+  }
+  .destiny-overlay.show .destiny-card{transform:scale(1);}
+  .destiny-icon{
+    font-size:2.2rem;
+    margin-bottom:1.4rem;
+    filter:drop-shadow(0 0 14px rgba(242,217,152,0.5));
+  }
+  .destiny-text{
+    font-family:'Cormorant Garamond';
+    font-weight:500;
+    font-size:clamp(1.2rem,2.8vw,1.55rem);
+    line-height:1.7;
+    color:var(--cream);
+  }
+  .destiny-verse{
+    margin-top:1.6rem;
+    font-family:'Cormorant Garamond';
+    font-style:italic;
+    font-size:1.05rem;
+    line-height:1.6;
+    color:var(--gold-light);
+  }
+  .destiny-ref{
+    margin-top:0.7rem;
+    font-family:'Cinzel';
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+  .destiny-close{
+    margin-top:2.4rem;
+    font-family:'Cinzel';
+    font-size:0.6rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--gold-dim);
+    cursor:pointer;
+    display:inline-block;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.3s ease, color 0.3s ease;
+  }
+  .destiny-close:hover{color:var(--gold-light); border-color:var(--gold-dim);}
+
   @media (max-width:640px){
     .frame{padding:3.2rem 1.4rem;}
   }
@@ -466,6 +575,19 @@
   <p class="wish-reveal" id="wishReveal">Whatever you wished for &mdash; may it be even better than you imagined. &#128171;</p>
 </section>
 
+<!-- SCRATCH BLESSING -->
+<section id="scratch-section">
+  <div class="eyebrow reveal">One more gift</div>
+  <p class="scratch-instruction reveal">scratch the gold foil to reveal a hidden blessing</p>
+  <div class="scratch-wrap reveal" id="scratchWrap">
+    <div class="scratch-under">
+      <p>&#8220;You are God's masterpiece, created anew in Christ, for good works He planned for you long ago.&#8221;</p>
+      <span class="scratch-ref">Ephesians 2:10</span>
+    </div>
+    <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+  </div>
+</section>
+
 <!-- SEAL -->
 <section id="seal-section">
   <div class="eyebrow reveal">A little something</div>
@@ -509,10 +631,27 @@
 
 <!-- FOOTER -->
 <section id="footer-section">
-  <svg class="footer-mark reveal" viewBox="0 0 44 44"><circle cx="22" cy="22" r="20" fill="none" stroke="#c9a24d" stroke-width="1"/><path d="M22 8 L22 36 M8 22 L36 22" stroke="#c9a24d" stroke-width="0.6" opacity="0.5"/></svg>
   <div class="footer-title reveal">Happy Birthday, Dani</div>
   <div class="footer-sub reveal">Grateful for you, always</div>
 </section>
+
+<!-- DESTINY -->
+<section id="destiny-section">
+  <div class="eyebrow reveal">One dream, already in motion</div>
+  <p class="destiny-instruction reveal">The Dream chassing the passion</p>
+  <button class="destiny-btn reveal" id="destinyBtn">Destiny</button>
+</section>
+
+<!-- DESTINY MODAL -->
+<div class="destiny-overlay" id="destinyOverlay">
+  <div class="destiny-card">
+    <div class="destiny-icon">&#9992;&#65039;</div>
+    <p class="destiny-text">Germany is waiting for you, Dani. The late shifts, the new language, every hard exam you've pushed through &mdash; all of it has been leading you straight to the life you've been dreaming of. You already have the heart of a nurse. Now go let the world see it.</p>
+    <p class="destiny-verse">&#8220;Commit to the Lord whatever you do, and He will establish your plans.&#8221;</p>
+    <p class="destiny-ref">Proverbs 16:3</p>
+    <div class="destiny-close" id="destinyClose">close</div>
+  </div>
+</div>
 
 <script>
   // curtain
@@ -524,7 +663,7 @@
 
   // hero letter reveal
   const heroName = document.getElementById('heroName');
-  const text = "Dani Christina";
+  const text = "DANI CHRISTINA";
   [...text].forEach((ch,i)=>{
     const s = document.createElement('span');
     s.textContent = ch === ' ' ? '\u00A0' : ch;
@@ -590,6 +729,76 @@
     burst(rect.left+rect.width/2, rect.top+rect.height/2);
     wishReveal.classList.add('show');
   });
+
+  // destiny button
+  const destinyBtn = document.getElementById('destinyBtn');
+  const destinyOverlay = document.getElementById('destinyOverlay');
+  const destinyClose = document.getElementById('destinyClose');
+  destinyBtn.addEventListener('click', ()=>{
+    destinyOverlay.classList.add('show');
+    const rect = destinyBtn.getBoundingClientRect();
+    burst(rect.left+rect.width/2, rect.top+rect.height/2);
+  });
+  function closeDestiny(){ destinyOverlay.classList.remove('show'); }
+  destinyClose.addEventListener('click', closeDestiny);
+  destinyOverlay.addEventListener('click', (e)=>{ if(e.target === destinyOverlay) closeDestiny(); });
+
+  // scratch-to-reveal gold foil card
+  const scratchWrap = document.getElementById('scratchWrap');
+  const scratchCanvas = document.getElementById('scratchCanvas');
+  const sctx = scratchCanvas.getContext('2d');
+  function sizeScratch(){
+    const r = scratchWrap.getBoundingClientRect();
+    scratchCanvas.width = r.width;
+    scratchCanvas.height = r.height;
+    const grad = sctx.createLinearGradient(0,0,r.width,r.height);
+    grad.addColorStop(0,'#8a6a2c');
+    grad.addColorStop(0.5,'#e8cd8f');
+    grad.addColorStop(1,'#8a6a2c');
+    sctx.fillStyle = grad;
+    sctx.fillRect(0,0,r.width,r.height);
+    sctx.fillStyle = 'rgba(11,9,6,0.55)';
+    sctx.font = '600 13px Cinzel, serif';
+    sctx.textAlign = 'center';
+    sctx.fillText('SCRATCH HERE', r.width/2, r.height/2);
+  }
+  sizeScratch();
+  window.addEventListener('resize', sizeScratch);
+
+  let scratching = false;
+  let scratchRevealed = false;
+  function scratchAt(x,y){
+    sctx.globalCompositeOperation = 'destination-out';
+    sctx.beginPath();
+    sctx.arc(x,y,22,0,Math.PI*2);
+    sctx.fill();
+  }
+  function getPos(e){
+    const rect = scratchCanvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return {x: t.clientX-rect.left, y: t.clientY-rect.top};
+  }
+  function checkScratchProgress(){
+    if(scratchRevealed) return;
+    const w = scratchCanvas.width, h = scratchCanvas.height;
+    if(!w||!h) return;
+    const data = sctx.getImageData(0,0,w,h,{willReadFrequently:true}).data;
+    let cleared = 0, total = data.length/4;
+    for(let i=3;i<data.length;i+=160){ if(data[i] < 40) cleared++; }
+    const sampled = Math.ceil(total/40);
+    if(cleared/sampled > 0.5){
+      scratchRevealed = true;
+      scratchWrap.classList.add('revealed');
+      const rect = scratchWrap.getBoundingClientRect();
+      burst(rect.left+rect.width/2, rect.top+rect.height/2);
+    }
+  }
+  scratchCanvas.addEventListener('mousedown', e=>{ scratching=true; const p=getPos(e); scratchAt(p.x,p.y); });
+  scratchCanvas.addEventListener('mousemove', e=>{ if(scratching){ const p=getPos(e); scratchAt(p.x,p.y); checkScratchProgress(); } });
+  window.addEventListener('mouseup', ()=>{ scratching=false; });
+  scratchCanvas.addEventListener('touchstart', e=>{ scratching=true; const p=getPos(e); scratchAt(p.x,p.y); }, {passive:true});
+  scratchCanvas.addEventListener('touchmove', e=>{ const p=getPos(e); scratchAt(p.x,p.y); checkScratchProgress(); }, {passive:true});
+  scratchCanvas.addEventListener('touchend', ()=>{ scratching=false; });
 
   // scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
