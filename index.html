@@ -370,6 +370,7 @@
     opacity:0; transform:translateY(10px);
     transition:opacity 0.9s ease, transform 0.9s ease;
   }
+  .wish-reveal p + p{ margin-top:0.6rem; }
   .wish-reveal.show{opacity:1; transform:translateY(0);}
 
   /* ---------- blessing ---------- */
@@ -572,7 +573,10 @@
   <div class="star-stage reveal" id="starStage">
     <svg viewBox="0 0 60 60" class="wish-star" id="wishStar"><path d="M30 4 L36 24 L57 24 L40 37 L46 57 L30 45 L14 57 L20 37 L3 24 L24 24 Z" fill="#c9a24d"/></svg>
   </div>
-  <p class="wish-reveal" id="wishReveal">Whatever you wished for &mdash; may it be even better than you imagined. &#128171;</p>
+  <div class="wish-reveal" id="wishReveal">
+    <p>May You Get Everything &mdash; You Wished For!! &#128150;&#10024;</p>
+    <p>Whatever you wished for &mdash; may it be even better than you imagined. &#128171;</p>
+  </div>
 </section>
 
 <!-- SCRATCH BLESSING -->
@@ -638,7 +642,7 @@
 <!-- DESTINY -->
 <section id="destiny-section">
   <div class="eyebrow reveal">One dream, already in motion</div>
-  <p class="destiny-instruction reveal">The Dream chassing the passion</p>
+  <p class="destiny-instruction reveal">for the nurse who's going places</p>
   <button class="destiny-btn reveal" id="destinyBtn">Destiny</button>
 </section>
 
@@ -663,7 +667,7 @@
 
   // hero letter reveal
   const heroName = document.getElementById('heroName');
-  const text = "Dani Christina";
+  const text = "Dani Francis";
   [...text].forEach((ch,i)=>{
     const s = document.createElement('span');
     s.textContent = ch === ' ' ? '\u00A0' : ch;
